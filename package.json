@@ -1,0 +1,44 @@
+{
+  "name": "pod-com",
+  "version": "0.1.0",
+  "description": "POD-COM: Solana-based AI Agent Communication Protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "anchor test",
+    "build": "anchor build",
+    "deploy:local": "anchor deploy --provider.cluster localnet",
+    "deploy:devnet": "anchor deploy --provider.cluster devnet",
+    "cli": "node cli/index.js",
+    "sdk:build": "cd sdk && npm run build",
+    "app:dev": "cd app/dashboard && npm run dev",
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "solana",
+    "blockchain",
+    "ai",
+    "messaging",
+    "anchor",
+    "web3"
+  ],
+  "author": "POD-COM Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/web3.js": "^1.78.0",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "chai": "^4.3.0",
+    "mocha": "^9.2.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^4.9.0",
+    "eslint": "^8.0.0",
+    "prettier": "^2.8.0"
+  },
+  "workspaces": [
+    "sdk",
+    "cli",
+    "app/*"
+  ]
+}
