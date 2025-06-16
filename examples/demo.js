@@ -15,6 +15,11 @@ const findAgentPDA = (wallet) => {
   );
 };
 
+/**
+ * Demonstrates the registration and update of an agent using the POD-COM protocol on the Solana Devnet.
+ *
+ * Performs agent account creation if it does not exist, updates agent capabilities and metadata, and logs protocol and network status information. Intended for showcasing POD-COM protocol functionality with the Anchor framework.
+ */
 async function demonstratePODCOM() {
   console.log("🚀 POD-COM Protocol Demonstration");
   console.log("=====================================");

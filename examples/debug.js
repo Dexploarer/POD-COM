@@ -15,6 +15,11 @@ const findAgentPDA = (wallet) => {
   );
 };
 
+/**
+ * Logs detailed debugging information about the agent account and message PDA derivations for the connected wallet.
+ *
+ * Fetches and displays the wallet's public key, the derived agent PDA, and the agent account's data fields. Calculates and logs three variations of message PDAs using different seed combinations involving the wallet and agent account. Errors encountered during execution are caught and logged.
+ */
 async function debug() {
   try {
     console.log("Wallet pubkey:", wallet.publicKey.toBase58());
