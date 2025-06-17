@@ -30,6 +30,17 @@ runs:
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
         fi
         
+    - name: Configure Rust for Solana
+      shell: bash
+      run: |
+        source $HOME/.cargo/env
+        # Install BPF target for Solana programs
+        rustup target add bpfel-unknown-unknown
+        # Set default toolchain to stable
+        rustup default stable
+        # Verify BPF target is available
+        rustup target list --installed | grep bpfel-unknown-unknown || exit 1
+        
     - name: Install Solana CLI
       shell: bash
       run: |
@@ -68,6 +79,8 @@ runs:
       run: |
         echo "🦀 Rust version:"
         rustc --version
+        echo "🎯 Rust targets:"
+        rustup target list --installed
         echo "⚡ Solana version:"
         solana --version
         echo "⚓ Anchor version:"

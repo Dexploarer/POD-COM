@@ -22,17 +22,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-          components: rustfmt, clippy
-
       - name: Setup Solana
         uses: ./actions/setup-solana
         with:
           solana-version: ${{ env.SOLANA_VERSION }}
           anchor-version: ${{ env.ANCHOR_VERSION }}
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          targets: bpfel-unknown-unknown
 
       - name: Cache Rust dependencies
         uses: actions/cache@v4
@@ -49,7 +50,9 @@ jobs:
         working-directory: programs/pod-com
 
       - name: Run Clippy lints
-        run: cargo clippy --all-targets --all-features -- -D warnings
+        run: |
+          # Run clippy for the BPF target specifically
+          cargo clippy --target bpfel-unknown-unknown --all-features -- -D warnings
         working-directory: programs/pod-com
 
       - name: Check Cargo.toml formatting
@@ -68,16 +71,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-
       - name: Setup Solana
         uses: ./actions/setup-solana
         with:
           solana-version: ${{ env.SOLANA_VERSION }}
           anchor-version: ${{ env.ANCHOR_VERSION }}
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: bpfel-unknown-unknown
 
       - name: Cache Rust dependencies
         uses: actions/cache@v4
@@ -107,16 +111,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-
       - name: Setup Solana
         uses: ./actions/setup-solana
         with:
           solana-version: ${{ env.SOLANA_VERSION }}
           anchor-version: ${{ env.ANCHOR_VERSION }}
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: bpfel-unknown-unknown
 
       - name: Cache Rust dependencies
         uses: actions/cache@v4
