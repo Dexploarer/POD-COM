@@ -46,10 +46,23 @@ export class MessageHandlers {
       throw new ValidationError("Recipient and payload are required");
     }
 
-    const recipientKey = MessageValidators.validateRecipient(recipient);
     const validatedPayload = MessageValidators.validateMessageContent(payload);
 
     const spinner = createSpinner("Sending message...");
+
+    if (this.context.globalOpts.dryRun) {
+      handleDryRun(this.context.globalOpts, spinner, "Message send", {
+        Recipient: recipient,
+        Type: messageType,
+        Content:
+          validatedPayload.slice(0, 100) +
+          (validatedPayload.length > 100 ? "..." : ""),
+        "Custom Value": customValue > 0 ? customValue : "N/A",
+      });
+      return;
+    }
+
+    const recipientKey = MessageValidators.validateRecipient(recipient);
 
     if (
       handleDryRun(this.context.globalOpts, spinner, "Message send", {

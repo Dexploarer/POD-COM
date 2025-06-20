@@ -38,8 +38,14 @@ export function createCommandHandler<T extends any[]>(
       const globalOpts = getCommandOpts(cmd);
       const commandArgs = args.slice(0, -1) as T;
       
-      const wallet = getWallet(globalOpts.keypair);
-      const keypair = getKeypair(globalOpts.keypair);
+      let wallet: ReturnType<typeof getWallet> | undefined;
+      let keypair: ReturnType<typeof getKeypair> | undefined;
+
+      if (!globalOpts.dryRun) {
+        wallet = getWallet(globalOpts.keypair);
+        keypair = getKeypair(globalOpts.keypair);
+      }
+
       const client = await createClient(globalOpts.network, wallet);
       await handler(client, keypair, globalOpts, ...commandArgs);
     } catch (error: any) {
@@ -73,7 +79,7 @@ export function handleDryRun(
  * Create spinner with consistent messaging
  */
 export function createSpinner(message: string): Ora {
-  return ora(message).start();
+  return ora({ text: message, stream: process.stdout }).start();
 }
 
 /**
