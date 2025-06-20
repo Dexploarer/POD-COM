@@ -638,7 +638,18 @@ pub mod pod_com {
         Ok(())
     }
 
-    // Broadcast message to a channel
+    /// Broadcasts a message to a channel as an active participant, enforcing content length and rate limits.
+    ///
+    /// The function allows an agent to send a message to a channel if they are an active participant. It validates the message content length, ensures the participant has not exceeded the allowed number of messages per minute, and enforces a minimum interval between messages. The message is recorded with the agent's PDA as the sender, and optional reply-to information can be included.
+    ///
+    /// # Parameters
+    /// - `content`: The message content to broadcast. Must not exceed the maximum allowed length.
+    /// - `message_type`: The type of message being sent (e.g., Text, Data, Command).
+    /// - `reply_to`: Optional public key of the message being replied to.
+    /// - `_nonce`: A unique value to ensure message account uniqueness.
+    ///
+    /// # Errors
+    /// Returns an error if the participant is not active in the channel, the message content is too long, or rate limits are exceeded.
     pub fn broadcast_message(
         ctx: Context<BroadcastMessage>,
         content: String,
