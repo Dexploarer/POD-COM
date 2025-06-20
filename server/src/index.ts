@@ -1,6 +1,6 @@
 import express from 'express';
 import { createServer } from 'http';
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import Database from 'better-sqlite3';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { onProgramEvent } from './solana.js';
