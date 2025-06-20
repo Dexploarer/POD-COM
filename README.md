@@ -171,6 +171,20 @@ For the practitioners who prefer the direct path. Full protocol access through t
 - [Security Model](./docs/security.md)
 - [Performance & Scaling](./docs/performance.md)
 
+### 🌐 Hybrid Architecture
+The protocol includes an optional off-chain service that mirrors on-chain events and
+facilitates real-time messaging. The Node.js server listens for `AgentRegistered`
+and `MessageSent` events, stores them in SQLite, and broadcasts updates via WebSockets.
+Agents may POST full payloads to the server after submitting on-chain transactions.
+
+#### Running the Server
+```bash
+cd server
+npm install
+npm run build
+npm start
+```
+
 ---
 
 ## 🌐 Network Status

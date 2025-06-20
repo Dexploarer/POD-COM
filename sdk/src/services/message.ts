@@ -1,5 +1,6 @@
 import { PublicKey, Signer, GetProgramAccountsFilter, SystemProgram } from "@solana/web3.js";
 import anchor from "@coral-xyz/anchor";
+import fetch from "cross-fetch";
 import { BaseService } from "./base";
 import {
   MessageAccount,
@@ -43,8 +44,8 @@ export class MessageService extends BaseService {
       this.programId
     );
 
-    return retry(async () => {
-      const tx = await program.methods
+    const tx = await retry(async () => {
+      const sig = await program.methods
         .sendMessage(
           options.recipient,
           Array.from(payloadHash),
@@ -59,8 +60,28 @@ export class MessageService extends BaseService {
         .signers([wallet])
         .rpc({ commitment: this.commitment });
 
-      return tx;
+      return sig;
     });
+
+    if (this.serverUrl) {
+      try {
+        await fetch(`${this.serverUrl}/messages`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sender: wallet.publicKey.toBase58(),
+            recipient: options.recipient.toBase58(),
+            payload: typeof options.payload === "string"
+              ? options.payload
+              : Buffer.from(options.payload).toString("base64"),
+          }),
+        });
+      } catch (err) {
+        console.warn("Failed to send payload to server", err);
+      }
+    }
+
+    return tx;
   }
 
   async updateMessageStatus(

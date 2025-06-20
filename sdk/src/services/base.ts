@@ -11,6 +11,7 @@ export interface BaseServiceConfig {
   programId: PublicKey;
   commitment: Commitment;
   program?: AnchorProgram;
+  serverUrl?: string;
 }
 
 /**
@@ -22,12 +23,14 @@ export abstract class BaseService {
   protected commitment: Commitment;
   protected program?: AnchorProgram;
   protected idl?: any;
+  protected serverUrl?: string;
 
   constructor(config: BaseServiceConfig) {
     this.connection = config.connection;
     this.programId = config.programId;
     this.commitment = config.commitment;
     this.program = config.program;
+    this.serverUrl = config.serverUrl;
   }
 
   protected ensureInitialized(): AnchorProgram {

@@ -65,7 +65,8 @@
   "homepage": "https://github.com/Dexploarer/PoD-Protocol#readme",
   "workspaces": [
     "sdk",
-    "cli"
+    "cli",
+    "server"
   ],
   "packageManager": "npm@11.4.1",
   "dependencies": {

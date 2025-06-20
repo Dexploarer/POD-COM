@@ -242,6 +242,7 @@ export class ConfigCommands {
             ["Keypair Path", currentConfig.keypairPath],
             ["Program ID", currentConfig.programId || "Default"],
             ["Custom Endpoint", currentConfig.customEndpoint || "None"],
+            ["Server", currentConfig.serverUrl || "None"],
           ];
 
           // Check if keypair exists and show public key
@@ -556,6 +557,30 @@ export class ConfigCommands {
         }
       });
 
+    // Set off-chain server URL
+    config
+      .command("set-server <url>")
+      .description("Set off-chain server URL")
+      .action(async (url) => {
+        try {
+          try {
+            new URL(url);
+          } catch {
+            console.error(chalk.red("Error: Invalid URL format"));
+            process.exit(1);
+          }
+
+          const currentConfig = this.loadConfig();
+          currentConfig.serverUrl = url;
+          this.saveConfig(currentConfig);
+
+          console.log(chalk.green("✅ Server URL set to:"), chalk.cyan(url));
+        } catch (error: any) {
+          console.error(chalk.red("Failed to set server:"), error.message);
+          process.exit(1);
+        }
+      });
+
     // Clear custom endpoint
     config
       .command("clear-endpoint")
@@ -569,6 +594,23 @@ export class ConfigCommands {
           console.log(chalk.green("✅ Custom endpoint cleared, using default"));
         } catch (error: any) {
           console.error(chalk.red("Failed to clear endpoint:"), error.message);
+          process.exit(1);
+        }
+      });
+
+    // Clear server URL
+    config
+      .command("clear-server")
+      .description("Clear off-chain server URL")
+      .action(async () => {
+        try {
+          const currentConfig = this.loadConfig();
+          delete currentConfig.serverUrl;
+          this.saveConfig(currentConfig);
+
+          console.log(chalk.green("✅ Server URL cleared"));
+        } catch (error: any) {
+          console.error(chalk.red("Failed to clear server:"), error.message);
           process.exit(1);
         }
       });
@@ -659,6 +701,12 @@ export class ConfigCommands {
               default: currentConfig.customEndpoint,
               when: (answers) => answers.customEndpoint,
             },
+            {
+              type: "input",
+              name: "serverUrl",
+              message: "Off-chain server URL (optional):",
+              default: currentConfig.serverUrl,
+            },
           ]);
 
           const spinner = ora("Setting up configuration...").start();
@@ -698,6 +746,10 @@ export class ConfigCommands {
             newConfig.customEndpoint = answers.endpointUrl;
           }
 
+          if (answers.serverUrl) {
+            newConfig.serverUrl = answers.serverUrl;
+          }
+
           this.saveConfig(newConfig);
 
           spinner.succeed("Setup completed successfully!");
@@ -708,6 +760,9 @@ export class ConfigCommands {
 
           if (newConfig.customEndpoint) {
             console.log(chalk.cyan("Endpoint:"), newConfig.customEndpoint);
+          }
+          if (newConfig.serverUrl) {
+            console.log(chalk.cyan("Server:"), newConfig.serverUrl);
           }
 
           if (answers.generateKeypair) {

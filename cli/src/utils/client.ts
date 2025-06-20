@@ -1,5 +1,5 @@
 import { PodComClient } from "@pod-protocol/sdk";
-import { getNetworkEndpoint, loadKeypair } from "./config.js";
+import { getNetworkEndpoint, loadKeypair, getServerUrl } from "./config.js";
 import { Keypair } from "@solana/web3.js";
 
 export async function createClient(
@@ -9,6 +9,7 @@ export async function createClient(
   const client = new PodComClient({
     endpoint: getNetworkEndpoint(network),
     commitment: "confirmed",
+    serverUrl: getServerUrl(),
   });
   await client.initialize(wallet);
   return client;

@@ -9,6 +9,8 @@ interface CliConfig {
   keypairPath: string;
   programId?: string;
   customEndpoint?: string;
+  serverUrl?: string;
+  serverWsUrl?: string;
 }
 
 /**
@@ -131,6 +133,16 @@ export function formatSignature(signature: string): string {
   return signature.length > 20
     ? signature.slice(0, 8) + "..." + signature.slice(-8)
     : signature;
+}
+
+export function getServerUrl(): string | undefined {
+  const config = loadConfig();
+  return config.serverUrl;
+}
+
+export function getServerWsUrl(): string | undefined {
+  const config = loadConfig();
+  return config.serverWsUrl;
 }
 
 /**

@@ -66,7 +66,8 @@
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",
     "@solana/web3.js": "^1.95.4",
-    "@solana/wallet-adapter-base": "^0.9.27"
+    "@solana/wallet-adapter-base": "^0.9.27",
+    "cross-fetch": "^3.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.5",

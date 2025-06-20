@@ -168,6 +168,8 @@ export interface PodComConfig {
   programId?: PublicKey;
   /** Default commitment level */
   commitment?: "processed" | "confirmed" | "finalized";
+  /** Optional off-chain server URL */
+  serverUrl?: string;
 }
 
 /**

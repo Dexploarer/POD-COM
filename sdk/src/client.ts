@@ -51,6 +51,7 @@ export class PodComClient {
   public escrow: EscrowService;
   public analytics: AnalyticsService;
   public discovery: DiscoveryService;
+  private serverUrl?: string;
 
   constructor(config: PodComConfig = {}) {
     this.connection = new Connection(
@@ -59,12 +60,14 @@ export class PodComClient {
     );
     this.programId = config.programId ?? PROGRAM_ID;
     this.commitment = config.commitment ?? "confirmed";
+    this.serverUrl = config.serverUrl;
 
     // Initialize services
     const serviceConfig: BaseServiceConfig = {
       connection: this.connection,
       programId: this.programId,
       commitment: this.commitment,
+      serverUrl: this.serverUrl,
     };
 
     this.agents = new AgentService(serviceConfig);
@@ -73,6 +76,10 @@ export class PodComClient {
     this.escrow = new EscrowService(serviceConfig);
     this.analytics = new AnalyticsService(serviceConfig);
     this.discovery = new DiscoveryService(serviceConfig);
+  }
+
+  getServerUrl(): string | undefined {
+    return this.serverUrl;
   }
 
   /**
